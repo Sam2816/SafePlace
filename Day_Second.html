@@ -234,7 +234,7 @@ button.choice-btn {
 setInterval(() => {
   const el = document.createElement("div");
   el.className = "floating";
-  el.innerText = Math.random() > 0.5 ? "❤️" : "⭐";
+  el.innerText = Math.random() > 0.5 ? "❤️" : "✨";
   el.style.left = Math.random() * 100 + "vw";
   el.style.fontSize = (Math.random()*25+15)+"px";
   el.style.animationDuration = (Math.random()*3+4) + "s";
@@ -319,7 +319,7 @@ noBtn.addEventListener("click", ()=>{
     noMsgContainer.appendChild(p);
   } else if(noClickCount===noMessages.length){
     const p=document.createElement("p");
-    p.innerText="Say Yes Else.. 🔫";
+    p.innerText="Say Yes Or... 🔫";
     noMsgContainer.appendChild(p);
   }
 
