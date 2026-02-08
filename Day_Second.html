@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Forever Us</title>
+
 <style>
 body{
   margin:0;
-  font-family: 'Arial', sans-serif; /* normal readable font for subtext */
+  font-family: 'Arial', sans-serif;
   height:100vh;
   display:flex;
   justify-content:center;
@@ -55,12 +56,12 @@ body{
   border:3px solid #ff4d6d;
 }
 
-/* Headings cursive */
+/* Headings */
 .card h2{
   font-family: 'Dancing Script', cursive;
 }
 
-/* Navigation Arrows */
+/* Navigation */
 .nav-container {
   display: flex;
   justify-content: center;
@@ -84,7 +85,7 @@ body{
   cursor: not-allowed;
 }
 
-/* YES & NO Container */
+/* YES & NO */
 .choice-area{
   margin-top:15px;
   display:flex;
@@ -95,10 +96,8 @@ body{
 
 .choice-wrap{
   display:none;
-  justify-content:flex-start;
   gap:10px;
   width:100%;
-  display:flex;
   flex-direction:row;
   justify-content:center;
 }
@@ -114,9 +113,8 @@ button.choice-btn {
 
 #yes{ background:#ff4d6d; color:white; margin-top:15px; }
 #no{ background:#444; color:white; }
-.glow-effect { box-shadow: 0 0 20px #ff4d6d; transform: scale(1.1); }
 
-/* --- 💌 HEART MODAL --- */
+/* 💌 HEART MODAL */
 .modal{
   position:fixed;
   inset:0;
@@ -180,7 +178,7 @@ button.choice-btn {
 
 .modal h3{
   font-family: 'Dancing Script', cursive;
-  color: #ff007f; /* rose red */
+  color: #ff007f;
   font-size: 32px;
 }
 
@@ -193,6 +191,23 @@ button.choice-btn {
 .heart-container.open .message-card {
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
+}
+
+/* 🎉 CONFETTI */
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  opacity: 0.9;
+  z-index: 200;
+  pointer-events: none;
+  animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
 }
 
 </style>
@@ -230,7 +245,7 @@ button.choice-btn {
 </div>
 
 <script>
-// Floating red hearts & stars
+// Floating hearts & stars
 setInterval(() => {
   const el = document.createElement("div");
   el.className = "floating";
@@ -242,7 +257,7 @@ setInterval(() => {
   setTimeout(()=>el.remove(),6000);
 },200);
 
-// Slides data
+// Slides
 const slides = [
   { title: "Hey ❤️", text: "I want to tell you something special today…" },
   { title: "Love ❤️", text: "You are one of the most precious people in my life." },
@@ -256,7 +271,6 @@ let currentIndex=0;
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 const cardContainer = document.getElementById("slide-container");
-const textParagraph = document.getElementById("text");
 const modal = document.getElementById("modal");
 const heartWrapper = document.getElementById("heartWrapper");
 
@@ -279,7 +293,7 @@ noMsgContainer.style.textAlign="center";
 noMsgContainer.style.marginTop="10px";
 noMsgContainer.style.lineHeight="1.4";
 noMsgContainer.style.fontSize="14px";
-cardContainer.querySelector(".choice-area").prepend(noMsgContainer); // Above buttons
+cardContainer.querySelector(".choice-area").prepend(noMsgContainer);
 
 // Update UI
 function updateUI(){
@@ -290,9 +304,6 @@ function updateUI(){
   if(currentIndex===slides.length-1){
     document.getElementById("nav-arrows").style.display="none";
     document.getElementById("choices").style.display="flex";
-    yesBtn.style.order="2";
-    noBtn.style.order="1";
-    noBtn.style.marginLeft="10px";
     yesBtn.style.transform="scale(1)";
     yesSize=100;
     noClickCount=0;
@@ -303,13 +314,12 @@ function updateUI(){
   }
 }
 
-// Slide change
 function changeSlide(dir){
   currentIndex+=dir;
   updateUI();
 }
 
-// No button click
+// NO click
 noBtn.addEventListener("click", ()=>{
   if(currentIndex!==slides.length-1) return;
 
@@ -326,7 +336,6 @@ noBtn.addEventListener("click", ()=>{
   yesSize+=15;
   yesBtn.style.transform=`scale(${yesSize/100})`;
 
-  // Move No button only until final message
   if(noClickCount<noMessages.length){
     const maxX=cardContainer.offsetWidth-noBtn.offsetWidth;
     const maxY=cardContainer.offsetHeight-noBtn.offsetHeight;
@@ -334,7 +343,6 @@ noBtn.addEventListener("click", ()=>{
     noBtn.style.left=Math.random()*maxX+"px";
     noBtn.style.top=Math.random()*maxY+"px";
   } else {
-    // align No button beside Yes after final
     noBtn.style.position="static";
   }
 
@@ -342,13 +350,37 @@ noBtn.addEventListener("click", ()=>{
   noClickCount++;
 });
 
-// Yes button click
+// 🎉 CONFETTI FUNCTION
+function celebrate() {
+  const colors = ["#ff4d6d", "#ffcc00", "#00ffcc", "#ffffff", "#ff69b4"];
+
+  for (let i = 0; i < 90; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+    const size = Math.random() * 8 + 6;
+    c.style.width = size + "px";
+    c.style.height = size + "px";
+    c.style.animationDuration = (Math.random() * 2 + 3) + "s";
+
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 5000);
+  }
+}
+
+// YES click
 const finalMsgText="Yayyy! 😆 You just officially agreed to be my partner-in-crime forever. That means unlimited laughter, random snacks, terrible jokes, and me pestering you for all eternity. Brace yourself… our BFF adventures are about to get absolutely legendary! 💖";
 
 yesBtn.addEventListener("click", ()=>{
   modal.style.display="flex";
   document.getElementById("finalMessage").innerText=finalMsgText;
-  setTimeout(()=>heartWrapper.classList.add("open"),400);
+
+  setTimeout(()=>{
+    heartWrapper.classList.add("open");
+    celebrate();
+  },400);
 });
 
 // Close modal
@@ -357,7 +389,6 @@ modal.addEventListener("click", ()=>{
   heartWrapper.classList.remove("open");
 });
 
-// Initialize
 updateUI();
 </script>
 
